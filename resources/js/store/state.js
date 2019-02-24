@@ -1,3 +1,5 @@
 export default {
-  name:'Ahmed'
+
+  newVoteErrors:null,
+  
 }

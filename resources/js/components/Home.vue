@@ -1,23 +1,20 @@
 <template>
 <v-app class="main-app">
   <v-container grid-list-lg>
-
+    <create-vote></create-vote>
     <router-view></router-view>
-
-        <v-btn small router to="/test" color="green white--text">
-          test it
-        </v-btn>
-        <v-btn small router to="/" color="indigo yellow--text">
-          back to home
-        </v-btn>
   </v-container>
   </v-app>
 </template>
 
 <script>
+  import CreateVote from './CreateVote.vue';
     export default {
+      components:{
+        CreateVote,
+      },
         mounted() {
-            console.log('Component mounted.')
+
         }
     }
 </script>
