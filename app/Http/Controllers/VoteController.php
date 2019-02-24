@@ -14,7 +14,7 @@ class VoteController extends Controller
         $request->validate([
           'question'=>'bail|required|string',
           'vote_type'=>'required|numeric|between:1,3',
-          'date'=>'bail|required|before_or_equal:today|date',
+          'date'=>'bail|required|after:today|date',
           'time'=>'nullable|date_format:H:i',
         ]);
 
@@ -40,8 +40,10 @@ class VoteController extends Controller
           'abstain'=>0
         ]);
 
-        return response()->json(['question'=>$question,
-        'stop_at'=>$stop_at,'id'=>$vote_id],201);
+        return response()->json([
+        'question'=>$question,
+        'stop_at'=>$stop_at,
+        'id'=>$vote_id],201);
 
       }
 }

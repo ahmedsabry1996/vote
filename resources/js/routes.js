@@ -1,6 +1,10 @@
+import ShowVote from './components/ShowVote.vue';
 export const routes= [
 
     {
-      path:'/test'
+      path:'/:voteId',
+      component:ShowVote,
+      name:'vote',
+
   }
 ]

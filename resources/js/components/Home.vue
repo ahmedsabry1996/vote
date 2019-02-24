@@ -1,8 +1,14 @@
 <template>
 <v-app class="main-app">
   <v-container grid-list-lg>
-    <create-vote></create-vote>
-    <router-view></router-view>
+    <v-layout row wrap>
+      <v-flex xs12 dark>
+        <create-vote></create-vote>
+      </v-flex>
+      <v-flex xs12>
+      <router-view></router-view>
+    </v-flex>
+    </v-layout>
   </v-container>
   </v-app>
 </template>
@@ -13,9 +19,6 @@
       components:{
         CreateVote,
       },
-        mounted() {
-
-        }
     }
 </script>
 <style scoped>

@@ -1879,6 +1879,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1894,6 +1904,9 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     createVoteErrors: function createVoteErrors() {
       return this.$store.getters.newVoteErrors;
+    },
+    voteUrl: function voteUrl() {
+      return this.$store.getters.voteUrl;
     }
   },
   methods: {
@@ -1933,12 +1946,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     CreateVote: _CreateVote_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
-  mounted: function mounted() {}
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ShowVote.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ShowVote.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  computed: {
+    ro: function ro() {
+      return this.$route.params.voteId;
+    }
+  }
 });
 
 /***/ }),
@@ -37633,10 +37679,6 @@ var render = function() {
   return _c(
     "v-content",
     [
-      _c("h2", { staticClass: "text-xs-center white--text display-2" }, [
-        _vm._v("\n    create your vote now !\n  ")
-      ]),
-      _vm._v(" "),
       _c(
         "v-container",
         { attrs: { "grid-list-md": "" } },
@@ -37645,6 +37687,14 @@ var render = function() {
             "v-layout",
             { attrs: { row: "", wrap: "" } },
             [
+              _c("v-flex", { attrs: { xs12: "" } }, [
+                _c(
+                  "h2",
+                  { staticClass: "text-xs-center white--text display-2" },
+                  [_vm._v("\n        create your vote now !\n      ")]
+                )
+              ]),
+              _vm._v(" "),
               _c("v-flex", { attrs: { xs12: "", sm3: "" } }, [
                 _c(
                   "div",
@@ -37826,9 +37876,7 @@ var render = function() {
                         : _vm._e()
                     ],
                     1
-                  ),
-                  _vm._v(" "),
-                  _c("p", [_vm._v(_vm._s(_vm.time))])
+                  )
                 ],
                 1
               ),
@@ -37890,27 +37938,64 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c("v-flex", { attrs: { xs12: "", sm12: "" } }, [
-                _c(
-                  "div",
-                  { staticClass: "text-xs-center " },
-                  [
-                    _c(
-                      "v-btn",
-                      {
-                        staticClass: "white--text",
-                        attrs: { color: "indigo mt-3" },
-                        on: { click: _vm.createVote }
-                      },
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", sm5: "", "offset-sm1": "" } },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      staticClass: "white--text",
+                      attrs: { color: "indigo mt-3" },
+                      on: { click: _vm.createVote }
+                    },
+                    [
+                      _vm._v("\n              create "),
+                      _c("v-icon", [_vm._v(" add ")])
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-flex", { attrs: { xs12: "", sm6: "" } }, [
+                _vm.voteUrl
+                  ? _c(
+                      "div",
+                      { staticClass: "text-xs-center" },
                       [
-                        _vm._v("\n              create "),
-                        _c("v-icon", [_vm._v(" add ")])
+                        _c("h3", [_vm._v("your vote is available via : ")]),
+                        _vm._v(" "),
+                        _c(
+                          "v-btn",
+                          {
+                            staticClass: "white--text",
+                            attrs: {
+                              flat: "",
+                              router: "",
+                              to: {
+                                name: "vote",
+                                params: { voteId: _vm.voteUrl }
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n            " + _vm._s(_vm.voteUrl) + " "
+                            ),
+                            _c(
+                              "v-icon",
+                              { staticClass: "mb-2", attrs: { right: "" } },
+                              [_vm._v("thumb_up")]
+                            )
+                          ],
+                          1
+                        )
                       ],
                       1
                     )
-                  ],
-                  1
-                )
+                  : _vm._e()
               ])
             ],
             1
@@ -37951,12 +38036,58 @@ var render = function() {
       _c(
         "v-container",
         { attrs: { "grid-list-lg": "" } },
-        [_c("create-vote"), _vm._v(" "), _c("router-view")],
+        [
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", dark: "" } },
+                [_c("create-vote")],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-flex", { attrs: { xs12: "" } }, [_c("router-view")], 1)
+            ],
+            1
+          )
+        ],
         1
       )
     ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ShowVote.vue?vue&type=template&id=f6a2551c&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ShowVote.vue?vue&type=template&id=f6a2551c&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("v-content", [
+    _c(
+      "h2",
+      { staticClass: "text-xs-center white--text", attrs: { color: "white" } },
+      [_vm._v("\n    " + _vm._s(_vm.ro) + "\n  ")]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -79877,6 +80008,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/ShowVote.vue":
+/*!**********************************************!*\
+  !*** ./resources/js/components/ShowVote.vue ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ShowVote_vue_vue_type_template_id_f6a2551c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ShowVote.vue?vue&type=template&id=f6a2551c&scoped=true& */ "./resources/js/components/ShowVote.vue?vue&type=template&id=f6a2551c&scoped=true&");
+/* harmony import */ var _ShowVote_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ShowVote.vue?vue&type=script&lang=js& */ "./resources/js/components/ShowVote.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ShowVote_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ShowVote_vue_vue_type_template_id_f6a2551c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ShowVote_vue_vue_type_template_id_f6a2551c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "f6a2551c",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ShowVote.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/ShowVote.vue?vue&type=script&lang=js&":
+/*!***********************************************************************!*\
+  !*** ./resources/js/components/ShowVote.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowVote_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ShowVote.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ShowVote.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowVote_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ShowVote.vue?vue&type=template&id=f6a2551c&scoped=true&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/ShowVote.vue?vue&type=template&id=f6a2551c&scoped=true& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowVote_vue_vue_type_template_id_f6a2551c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./ShowVote.vue?vue&type=template&id=f6a2551c&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ShowVote.vue?vue&type=template&id=f6a2551c&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowVote_vue_vue_type_template_id_f6a2551c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowVote_vue_vue_type_template_id_f6a2551c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/routes.js":
 /*!********************************!*\
   !*** ./resources/js/routes.js ***!
@@ -79887,8 +80087,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "routes", function() { return routes; });
+/* harmony import */ var _components_ShowVote_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/ShowVote.vue */ "./resources/js/components/ShowVote.vue");
+
 var routes = [{
-  path: '/test'
+  path: '/:voteId',
+  component: _components_ShowVote_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+  name: 'vote'
 }];
 
 /***/ }),
@@ -79910,7 +80114,9 @@ __webpack_require__.r(__webpack_exports__);
       date: data.date,
       time: data.time
     }).then(function (response) {
-      console.log(response.data);
+      context.commit('truncateErrors');
+      var voteUrl = response.data.id;
+      context.commit('assignVoteUrl', voteUrl);
     }).catch(function (errors) {
       context.commit('newVoteErrors', errors.response.data.errors);
     });
@@ -79931,6 +80137,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   newVoteErrors: function newVoteErrors(state) {
     return state.newVoteErrors;
+  },
+  voteUrl: function voteUrl(state) {
+    return state.voteUrl;
   }
 });
 
@@ -79974,6 +80183,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   newVoteErrors: function newVoteErrors(state, payload) {
     state.newVoteErrors = payload;
+  },
+  truncateErrors: function truncateErrors(state) {
+    state.newVoteErrors = null;
+  },
+  assignVoteUrl: function assignVoteUrl(state, payload) {
+    state.voteUrl = payload;
   }
 });
 
@@ -79989,7 +80204,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  newVoteErrors: null
+  newVoteErrors: null,
+  voteUrl: null
 });
 
 /***/ }),

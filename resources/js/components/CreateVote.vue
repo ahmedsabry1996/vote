@@ -1,13 +1,17 @@
 <template>
   <v-content>
-    <h2 class="text-xs-center white--text display-2">
-      create your vote now !
-    </h2>
     <v-container grid-list-md>
       <v-layout row wrap>
+
+        <v-flex xs12>
+
+        <h2 class="text-xs-center white--text display-2">
+          create your vote now !
+        </h2>
+
+        </v-flex>
         <v-flex xs12 sm3>
           <div class="ml-5">
-
             <v-text-field
               label="vote title"
               dark
@@ -79,7 +83,6 @@
           @click:minute="$refs.menu.save(time)"
         ></v-time-picker>
       </v-menu>
-      <p>{{time}}</p>
         </v-flex>
         <v-flex xs12 sm3>
           <v-radio-group v-model="voteType" class="my-0">
@@ -98,13 +101,20 @@
           </v-radio-group>
 
         </v-flex>
-        <v-flex xs12 sm12>
-          <div class="text-xs-center ">
+        <v-flex xs12 sm5 offset-sm1>
 
               <v-btn @click="createVote" color="indigo mt-3" class="white--text">
                 create <v-icon> add </v-icon>
               </v-btn>
-            </div>
+
+        </v-flex>
+        <v-flex xs12 sm6>
+          <div class="text-xs-center" v-if="voteUrl">
+            <h3>your vote is available via : </h3>
+            <v-btn class="white--text" flat router :to="{ name: 'vote', params: {voteId:voteUrl} }">
+              {{voteUrl}} <v-icon right class="mb-2">thumb_up</v-icon>
+            </v-btn>
+          </div>
         </v-flex>
       </v-layout>
 
@@ -130,6 +140,9 @@ export default {
   computed:{
     createVoteErrors(){
           return this.$store.getters.newVoteErrors;
+    },
+    voteUrl(){
+      return this.$store.getters.voteUrl;
     }
   },
   methods:{
