@@ -10,8 +10,9 @@
         </h2>
 
         </v-flex>
+
         <v-flex xs12 sm3>
-          <div class="ml-5">
+          <div class="">
             <v-text-field
               label="vote title"
               dark
@@ -24,7 +25,7 @@
             </div>
         </v-flex>
         <v-flex xs12 sm3>
-          <div class="text-xs-center ml-5">
+          <div class="text-xs-center">
 
           <v-menu
                  v-model="menu2"
@@ -54,7 +55,7 @@
         </v-flex>
         <v-flex xs12 sm3>
           <v-menu
-          class="ml-4"
+          class=""
         ref="menu"
         v-model="menu"
         :close-on-content-click="false"
@@ -83,7 +84,7 @@
           @click:minute="$refs.menu.save(time)"
         ></v-time-picker>
       </v-menu>
-        </v-flex>
+    </v-flex>
         <v-flex xs12 sm3>
           <v-radio-group v-model="voteType" class="my-0">
             <span class="label label-default white--text">vote options</span>

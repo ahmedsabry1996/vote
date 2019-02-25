@@ -13,6 +13,7 @@ class CreateVotersTable extends Migration
             $table->increments('id');
             $table->ipAddress('voter_ip');
             $table->integer('vote_id');
+            $table->string('answer');
             $table->timestamps();
         });
     }
