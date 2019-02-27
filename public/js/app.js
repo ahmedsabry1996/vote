@@ -1864,32 +1864,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1897,7 +1871,6 @@ __webpack_require__.r(__webpack_exports__);
       date: new Date().toISOString().substr(0, 10),
       menu2: false,
       menu: false,
-      time: "00:00",
       question: '',
       voteType: 1
     };
@@ -1914,14 +1887,15 @@ __webpack_require__.r(__webpack_exports__);
     createVote: function createVote() {
       var question = this.question;
       var date = this.date;
-      var time = this.time;
       var voteType = this.voteType;
       this.$store.dispatch('createVote', {
         question: question,
         voteType: voteType,
-        date: date,
-        time: time
+        date: date
       });
+    },
+    copiedSuccess: function copiedSuccess() {
+      alert(212);
     }
   }
 });
@@ -1938,6 +1912,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CreateVote_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateVote.vue */ "./resources/js/components/CreateVote.vue");
+/* harmony import */ var _LatestVotes_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LatestVotes.vue */ "./resources/js/components/LatestVotes.vue");
+//
 //
 //
 //
@@ -1954,9 +1930,114 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    CreateVote: _CreateVote_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    CreateVote: _CreateVote_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    LatestVotes: _LatestVotes_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LatestVotes.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/LatestVotes.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      loading: false
+    };
+  },
+  computed: {
+    latestVotes: function latestVotes() {
+      return this.$store.getters.latestVotes;
+    },
+    noMore: {
+      get: function get() {
+        return this.$store.getters.noMore;
+      },
+      set: function set() {
+        false;
+      }
+    }
+  },
+  created: function created() {
+    this.$store.dispatch('latestVotes');
+  },
+  methods: {
+    loadMoreVotes: function loadMoreVotes() {
+      var _this = this;
+
+      this.loading = true;
+      this.$store.dispatch('loadMoreVotes').then(function () {
+        _this.loading = false;
+      });
+    }
+  },
+  filters: {
+    dateForHuman: function dateForHuman(val) {
+      return moment(val).fromNow();
+    }
   }
 });
 
@@ -2067,15 +2148,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       vote: null,
-      selectedVote: 'null',
+      voteResult: null,
+      selectedVote: null,
       loading: false,
-      snackbar: false
+      snackbar: false,
+      ended: false
     };
   },
   watch: {
@@ -2111,10 +2215,15 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       this.$store.dispatch('ShowVote', {
         voteId: id
       }).then(function (response) {
+        console.log(response.data);
+        _this.ended = response.data.vote_ended;
+        _this.voteResult = response.data.vote_results;
         _this.vote = response.data.vote;
         _this.selectedVote = response.data.is_voted_before;
       }).catch(function (error) {
-        console.log(error.response);
+        if (error.response.status == 404) {
+          _this.$router.push('/');
+        }
       });
     },
     voted: function voted() {
@@ -55419,6 +55528,18 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/v-clipboard/dist/index.min.js":
+/*!****************************************************!*\
+  !*** ./node_modules/v-clipboard/dist/index.min.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(e,t){ true?module.exports=t():undefined}(this,function(){return function(e){function t(r){if(n[r])return n[r].exports;var o=n[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,t),o.l=!0,o.exports}var n={};return t.m=e,t.c=n,t.i=function(e){return e},t.d=function(e,n,r){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:r})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="/dist/",t(t.s=0)}([function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r=function(e){var t=document.createElement("textarea"),n=void 0;if("string"!=typeof e)try{n=JSON.stringify(e)}catch(e){throw"Failed to copy value to clipboard. Unknown type."}else n=e;if(t.value=n,t.setAttribute("readonly",""),t.style="position:fixed;pointer-events:none;z-index:-9999;opacity:0;",document.body.appendChild(t),navigator.userAgent.match(/ipad|ipod|iphone/i)){var r=t.contentEditable,o=t.readOnly;t.contentEditable=!0,t.readOnly=!0;var a=document.createRange();a.selectNodeContents(t);var i=window.getSelection();i.removeAllRanges(),i.addRange(a),t.setSelectionRange(0,999999),t.contentEditable=r,t.readOnly=o}else t.select();var c=!1;try{c=document.execCommand("copy")}catch(e){console.warn(e)}return document.body.removeChild(t),c};t.default={install:function(e){e.prototype.$clipboard=r;var t=function(e){return function(){return"$"+e++}}(1),n={},o=function(e){e&&(n[e]=null,delete n[e])},a=function(e){var r=t();return n[r]=e,r};e.directive("clipboard",{bind:function(e,t){var o=t.arg,i=t.value;switch(o){case"error":var c=a(i);return void(e.dataset.clipboardErrorHandler=c);case"success":var d=a(i);return void(e.dataset.clipboardSuccessHandler=d);default:var l=function(o){if(t.hasOwnProperty("value")){var a={value:"function"==typeof i?i():i,event:o},c=r(a.value)?e.dataset.clipboardSuccessHandler:e.dataset.clipboardErrorHandler,d=n[c];d&&d(a)}},u=a(l);return e.dataset.clipboardClickHandler=u,void e.addEventListener("click",n[u])}},unbind:function(e){var t=e.dataset,r=t.clipboardSuccessHandler,a=t.clipboardErrorHandler,i=t.clipboardClickHandler;o(r),o(a),i&&(e.removeEventListener("click",n[i]),o(i))}})}}}])});
+//# sourceMappingURL=index.min.js.map
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateVote.vue?vue&type=template&id=5fe6c3b1&scoped=true&":
 /*!*************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CreateVote.vue?vue&type=template&id=5fe6c3b1&scoped=true& ***!
@@ -55446,14 +55567,19 @@ var render = function() {
             { attrs: { row: "", wrap: "" } },
             [
               _c("v-flex", { attrs: { xs12: "" } }, [
-                _c(
-                  "h2",
-                  { staticClass: "text-xs-center white--text display-2" },
-                  [_vm._v("\n        create your vote now !\n      ")]
-                )
+                _c("h2", { staticClass: "text-xs-center white--text" }, [
+                  _vm._v("\n        create your vote now !\n      ")
+                ]),
+                _vm._v(" "),
+                _c("h4", { staticClass: "text-xs-center white--text " }, [
+                  _vm._v("timezone : "),
+                  _c("span", { staticClass: "yellow--text" }, [
+                    _vm._v("cairo ")
+                  ])
+                ])
               ]),
               _vm._v(" "),
-              _c("v-flex", { attrs: { xs12: "", sm3: "" } }, [
+              _c("v-flex", { attrs: { xs12: "", sm4: "" } }, [
                 _c(
                   "div",
                   {},
@@ -55472,7 +55598,7 @@ var render = function() {
                     _vm.createVoteErrors
                       ? [
                           !!_vm.createVoteErrors.question
-                            ? _c("p", { staticClass: "error--text" }, [
+                            ? _c("p", { staticClass: "yellow--text" }, [
                                 _vm._v(_vm._s(_vm.createVoteErrors.question[0]))
                               ])
                             : _vm._e()
@@ -55483,7 +55609,7 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("v-flex", { attrs: { xs12: "", sm3: "" } }, [
+              _c("v-flex", { attrs: { xs12: "", sm4: "" } }, [
                 _c(
                   "div",
                   { staticClass: "text-xs-center" },
@@ -55549,7 +55675,7 @@ var render = function() {
                     _vm.createVoteErrors
                       ? [
                           _vm.createVoteErrors.date
-                            ? _c("p", { staticClass: "error--text" }, [
+                            ? _c("p", { staticClass: "yellow--text" }, [
                                 _vm._v(_vm._s(_vm.createVoteErrors.date[0]))
                               ])
                             : _vm._e()
@@ -55562,85 +55688,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-flex",
-                { attrs: { xs12: "", sm3: "" } },
-                [
-                  _c(
-                    "v-menu",
-                    {
-                      ref: "menu",
-                      attrs: {
-                        "close-on-content-click": false,
-                        "nudge-right": 40,
-                        "return-value": _vm.time,
-                        lazy: "",
-                        transition: "scale-transition",
-                        "offset-y": "",
-                        "full-width": "",
-                        "max-width": "290px",
-                        "min-width": "290px"
-                      },
-                      on: {
-                        "update:returnValue": function($event) {
-                          _vm.time = $event
-                        },
-                        "update:return-value": function($event) {
-                          _vm.time = $event
-                        }
-                      },
-                      model: {
-                        value: _vm.menu,
-                        callback: function($$v) {
-                          _vm.menu = $$v
-                        },
-                        expression: "menu"
-                      }
-                    },
-                    [
-                      _c("v-text-field", {
-                        attrs: {
-                          slot: "activator",
-                          dark: "",
-                          label: "time",
-                          "prepend-icon": "access_time",
-                          readonly: ""
-                        },
-                        slot: "activator",
-                        model: {
-                          value: _vm.time,
-                          callback: function($$v) {
-                            _vm.time = $$v
-                          },
-                          expression: "time"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _vm.menu
-                        ? _c("v-time-picker", {
-                            attrs: { "full-width": "", value: "00:00" },
-                            on: {
-                              "click:minute": function($event) {
-                                return _vm.$refs.menu.save(_vm.time)
-                              }
-                            },
-                            model: {
-                              value: _vm.time,
-                              callback: function($$v) {
-                                _vm.time = $$v
-                              },
-                              expression: "time"
-                            }
-                          })
-                        : _vm._e()
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-flex",
-                { attrs: { xs12: "", sm3: "" } },
+                { attrs: { xs12: "", sm4: "" } },
                 [
                   _c(
                     "v-radio-group",
@@ -55739,15 +55787,31 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n            " + _vm._s(_vm.voteUrl) + " "
-                            ),
-                            _c(
-                              "v-icon",
-                              { staticClass: "mb-2", attrs: { right: "" } },
-                              [_vm._v("thumb_up")]
+                              "\n            " +
+                                _vm._s(_vm.voteUrl) +
+                                "\n          "
                             )
-                          ],
-                          1
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-btn",
+                          {
+                            directives: [
+                              {
+                                name: "clipboard",
+                                rawName: "v-clipboard",
+                                value: function() {
+                                  return "http://127.0.0.1:8000/" + _vm.voteUrl
+                                },
+                                expression:
+                                  "() => `http://127.0.0.1:8000/${voteUrl}`"
+                              }
+                            ],
+                            staticClass: "indigo white--text",
+                            attrs: { small: "", round: "" }
+                          },
+                          [_vm._v("\n            copy link\n          ")]
                         )
                       ],
                       1
@@ -55806,6 +55870,148 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("v-flex", { attrs: { xs12: "" } }, [_c("router-view")], 1)
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("latest-votes")
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LatestVotes.vue?vue&type=template&id=c512dd32&scoped=true&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/LatestVotes.vue?vue&type=template&id=c512dd32&scoped=true& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-content",
+    [
+      _c(
+        "v-container",
+        { attrs: { "grid-list-md": "" } },
+        [
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _vm.latestVotes.length > 0
+                ? [
+                    _c("v-flex", { attrs: { xs12: "" } }, [
+                      _c("h2", { staticClass: "white--text title" }, [
+                        _vm._v("latest votes")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.latestVotes, function(vote) {
+                      return [
+                        _c(
+                          "v-flex",
+                          { attrs: { xs12: "", sm4: "" } },
+                          [
+                            _c(
+                              "v-card",
+                              {
+                                staticClass: "indigo white--text ",
+                                attrs: { router: "", to: "/" + vote.id }
+                              },
+                              [
+                                _c(
+                                  "v-card-title",
+                                  {
+                                    staticClass: "text-xs-center",
+                                    attrs: { "primary-titl": "" }
+                                  },
+                                  [_c("h3", [_vm._v(_vm._s(vote.question))])]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "span",
+                                  { staticClass: "ma-1 white--text" },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm._f("dateForHuman")(vote.stop_at)
+                                      )
+                                    )
+                                  ]
+                                ),
+                                _c("br")
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ]
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "v-btn",
+                      {
+                        staticClass: "mt-3 green white--text",
+                        attrs: { round: "", small: "", loading: _vm.loading },
+                        on: { click: _vm.loadMoreVotes }
+                      },
+                      [_vm._v("\n    load more\n  ")]
+                    )
+                  ]
+                : [
+                    _c("h2", { staticClass: "white--text" }, [
+                      _vm._v("\n    No recent votes\n  ")
+                    ])
+                  ]
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "v-snackbar",
+            {
+              attrs: { bottom: "", color: "indigo" },
+              model: {
+                value: _vm.noMore,
+                callback: function($$v) {
+                  _vm.noMore = $$v
+                },
+                expression: "noMore"
+              }
+            },
+            [
+              _c("h3", [_vm._v("you loaded all existing votes :D")]),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { dark: "", flat: "" },
+                  on: {
+                    click: function($event) {
+                      _vm.noMore = false
+                    }
+                  }
+                },
+                [_vm._v("\n    Close\n  ")]
+              )
             ],
             1
           )
@@ -55906,7 +56112,7 @@ var render = function() {
                                   _c(
                                     "v-radio-group",
                                     {
-                                      attrs: { row: "" },
+                                      attrs: { row: "", disabled: _vm.ended },
                                       model: {
                                         value: _vm.selectedVote,
                                         callback: function($$v) {
@@ -55928,7 +56134,9 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                    yes\n                  "
+                                                "\n                    yes (" +
+                                                  _vm._s(_vm.voteResult.yes) +
+                                                  ")\n                  "
                                               )
                                             ]
                                           )
@@ -55947,7 +56155,9 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                    no\n                  "
+                                                "\n                    no (" +
+                                                  _vm._s(_vm.voteResult.no) +
+                                                  ")\n                  "
                                               )
                                             ]
                                           )
@@ -55961,7 +56171,7 @@ var render = function() {
                                   _c(
                                     "v-radio-group",
                                     {
-                                      attrs: { row: "" },
+                                      attrs: { row: "", disabled: _vm.ended },
                                       model: {
                                         value: _vm.selectedVote,
                                         callback: function($$v) {
@@ -55971,20 +56181,70 @@ var render = function() {
                                       }
                                     },
                                     [
-                                      _c("v-radio", {
-                                        attrs: { value: "yes", label: "yes" }
-                                      }),
+                                      _c(
+                                        "v-radio",
+                                        { attrs: { value: "yes" } },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              attrs: { slot: "label" },
+                                              slot: "label"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                  yes (" +
+                                                  _vm._s(_vm.voteResult.yes) +
+                                                  ")\n                "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
                                       _vm._v(" "),
-                                      _c("v-radio", {
-                                        attrs: { value: "no", label: "no" }
-                                      }),
+                                      _c(
+                                        "v-radio",
+                                        { attrs: { value: "no" } },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              attrs: { slot: "label" },
+                                              slot: "label"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                  no (" +
+                                                  _vm._s(_vm.voteResult.no) +
+                                                  ")\n                "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
                                       _vm._v(" "),
-                                      _c("v-radio", {
-                                        attrs: {
-                                          value: "notsure",
-                                          label: "other"
-                                        }
-                                      })
+                                      _c(
+                                        "v-radio",
+                                        { attrs: { value: "notsure" } },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              attrs: { slot: "label" },
+                                              slot: "label"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                  other (" +
+                                                  _vm._s(
+                                                    _vm.voteResult.abstain
+                                                  ) +
+                                                  ")\n                "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
                                     ],
                                     1
                                   )
@@ -55993,38 +56253,64 @@ var render = function() {
                           2
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "text-xs-center" }, [
-                          _c("h4", [
-                            _vm._v(
-                              "\n            End " +
-                                _vm._s(
-                                  _vm._f("dateForHuman")(_vm.vote.stop_at)
-                                ) +
-                                "\n            "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
                         _c(
                           "div",
                           { staticClass: "text-xs-center" },
                           [
-                            _c(
-                              "v-btn",
-                              {
-                                attrs: {
-                                  medium: "",
-                                  round: "",
-                                  color: "primary",
-                                  loading: _vm.loading
-                                },
-                                on: { click: _vm.voted }
-                              },
-                              [_vm._v("\n        vote\n      ")]
-                            )
+                            !_vm.ended
+                              ? [
+                                  _c("h4", [
+                                    _vm._v(
+                                      "\n            Ends " +
+                                        _vm._s(
+                                          _vm._f("dateForHuman")(
+                                            _vm.vote.stop_at
+                                          )
+                                        ) +
+                                        "\n            "
+                                    )
+                                  ])
+                                ]
+                              : [
+                                  _c("h4", { staticClass: "yellow--text" }, [
+                                    _vm._v(
+                                      "\n            Ended " +
+                                        _vm._s(
+                                          _vm._f("dateForHuman")(
+                                            _vm.vote.stop_at
+                                          )
+                                        ) +
+                                        "\n            "
+                                    )
+                                  ])
+                                ]
                           ],
-                          1
-                        )
+                          2
+                        ),
+                        _vm._v(" "),
+                        !_vm.ended
+                          ? _c(
+                              "div",
+                              { staticClass: "text-xs-center" },
+                              [
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: {
+                                      medium: "",
+                                      round: "",
+                                      color: "primary",
+                                      loading: _vm.loading,
+                                      disabled: !_vm.selectedVote
+                                    },
+                                    on: { click: _vm.voted }
+                                  },
+                                  [_vm._v("\n        vote\n      ")]
+                                )
+                              ],
+                              1
+                            )
+                          : _vm._e()
                       ])
                     ],
                     1
@@ -56036,7 +56322,7 @@ var render = function() {
               _c(
                 "v-snackbar",
                 {
-                  attrs: { color: "indigo" },
+                  attrs: { top: "", color: "indigo" },
                   model: {
                     value: _vm.snackbar,
                     callback: function($$v) {
@@ -102458,13 +102744,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_Home_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Home.vue */ "./resources/js/components/Home.vue");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
-/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./store/index */ "./resources/js/store/index.js");
-/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
-/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var vue_moment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-moment */ "./node_modules/vue-moment/dist/vue-moment.js");
-/* harmony import */ var vue_moment__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vue_moment__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var v_clipboard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! v-clipboard */ "./node_modules/v-clipboard/dist/index.min.js");
+/* harmony import */ var v_clipboard__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(v_clipboard__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./store/index */ "./resources/js/store/index.js");
+/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
+/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var vue_moment__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-moment */ "./node_modules/vue-moment/dist/vue-moment.js");
+/* harmony import */ var vue_moment__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vue_moment__WEBPACK_IMPORTED_MODULE_8__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
@@ -102475,15 +102763,17 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
+
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_6___default.a);
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]({
-  routes: _routes__WEBPACK_IMPORTED_MODULE_4__["routes"],
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_4__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_7___default.a);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_clipboard__WEBPACK_IMPORTED_MODULE_3___default.a);
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_4__["default"]({
+  routes: _routes__WEBPACK_IMPORTED_MODULE_5__["routes"],
   mode: 'history'
 });
-var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store(_store_index__WEBPACK_IMPORTED_MODULE_5__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_moment__WEBPACK_IMPORTED_MODULE_7___default.a, {});
+var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store(_store_index__WEBPACK_IMPORTED_MODULE_6__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_moment__WEBPACK_IMPORTED_MODULE_8___default.a, {});
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   router: router,
@@ -102709,6 +102999,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/LatestVotes.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/LatestVotes.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LatestVotes_vue_vue_type_template_id_c512dd32_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LatestVotes.vue?vue&type=template&id=c512dd32&scoped=true& */ "./resources/js/components/LatestVotes.vue?vue&type=template&id=c512dd32&scoped=true&");
+/* harmony import */ var _LatestVotes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LatestVotes.vue?vue&type=script&lang=js& */ "./resources/js/components/LatestVotes.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LatestVotes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LatestVotes_vue_vue_type_template_id_c512dd32_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LatestVotes_vue_vue_type_template_id_c512dd32_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "c512dd32",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/LatestVotes.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/LatestVotes.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/LatestVotes.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LatestVotes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./LatestVotes.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LatestVotes.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LatestVotes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/LatestVotes.vue?vue&type=template&id=c512dd32&scoped=true&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/LatestVotes.vue?vue&type=template&id=c512dd32&scoped=true& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LatestVotes_vue_vue_type_template_id_c512dd32_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./LatestVotes.vue?vue&type=template&id=c512dd32&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LatestVotes.vue?vue&type=template&id=c512dd32&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LatestVotes_vue_vue_type_template_id_c512dd32_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LatestVotes_vue_vue_type_template_id_c512dd32_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/NotFound.vue":
 /*!**********************************************!*\
   !*** ./resources/js/components/NotFound.vue ***!
@@ -102858,7 +103217,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "routes", function() { return routes; });
 /* harmony import */ var _components_ShowVote_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/ShowVote.vue */ "./resources/js/components/ShowVote.vue");
-/* harmony import */ var _components_NotFound_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/NotFound.vue */ "./resources/js/components/NotFound.vue");
+/* harmony import */ var _components_NotFound_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/NotFound.vue */ "./resources/js/components/NotFound.vue");
 
 
 var routes = [{
@@ -102867,7 +103226,7 @@ var routes = [{
   name: 'vote'
 }, {
   path: "*",
-  component: _components_NotFound_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+  component: _components_NotFound_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
 }];
 
 /***/ }),
@@ -102891,8 +103250,13 @@ __webpack_require__.r(__webpack_exports__);
     }).then(function (response) {
       context.commit('truncateErrors');
       var voteUrl = response.data.id;
-      context.commit('assignVoteUrl', voteUrl);
+      var allVotes = response.data.all_votes;
+      context.commit('assignVoteUrl', {
+        url: voteUrl,
+        allVotes: allVotes
+      });
     }).catch(function (errors) {
+      console.log(errors.response);
       context.commit('newVoteErrors', errors.response.data.errors);
     });
   },
@@ -102920,6 +103284,39 @@ __webpack_require__.r(__webpack_exports__);
         reject(error);
       });
     });
+  },
+  latestVotes: function latestVotes(context) {
+    var offset = context.state.offset;
+    axios.post('/api/latest-votes', {
+      offset: offset
+    }).then(function (response) {
+      console.log(response.data);
+      context.commit('latestVotes', {
+        latestVotes: response.data.latest_votes,
+        allVotes: response.data.all_votes
+      });
+    }).catch(function (error) {
+      console.log(error.response);
+    });
+  },
+  loadMoreVotes: function loadMoreVotes(context, data) {
+    var offset = context.state.offset;
+    var allVotes = context.state.allVotes;
+    var loadedVotes = context.state.loadedVotes;
+
+    if (loadedVotes != allVotes) {
+      axios.post('/api/latest-votes', {
+        offset: offset
+      }).then(function (response) {
+        console.log(response.data);
+        console.log(77);
+        context.commit('loadMoreVotes', response.data.latest_votes);
+      }).catch(function (error) {
+        console.log(error.response);
+      });
+    } else {
+      context.commit('noMore');
+    }
   }
 });
 
@@ -102940,6 +103337,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   voteUrl: function voteUrl(state) {
     return state.voteUrl;
+  },
+  latestVotes: function latestVotes(state) {
+    return state.latestVotes;
+  },
+  noMore: function noMore(state) {
+    return state.noMore;
   }
 });
 
@@ -102988,7 +103391,24 @@ __webpack_require__.r(__webpack_exports__);
     state.newVoteErrors = null;
   },
   assignVoteUrl: function assignVoteUrl(state, payload) {
-    state.voteUrl = payload;
+    state.voteUrl = payload.url;
+    state.allVotes = payload.allVotes;
+  },
+  latestVotes: function latestVotes(state, payload) {
+    state.latestVotes = payload.latestVotes;
+    state.allVotes = payload.allVotes;
+    state.loadedVotes = state.latestVotes.length;
+    state.offset += 5;
+  },
+  loadMoreVotes: function loadMoreVotes(state, payload) {
+    payload.map(function (val) {
+      state.latestVotes.push(val);
+    });
+    state.loadedVotes = state.latestVotes.length;
+    state.offset += 5;
+  },
+  noMore: function noMore(state) {
+    state.noMore = true;
   }
 });
 
@@ -103005,7 +103425,11 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   newVoteErrors: null,
-  voteUrl: null
+  voteUrl: null,
+  offset: 0,
+  latestVotes: [],
+  loadedVotes: 0,
+  noMore: false
 });
 
 /***/ }),

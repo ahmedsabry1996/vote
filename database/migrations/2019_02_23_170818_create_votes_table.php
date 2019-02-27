@@ -13,7 +13,7 @@ class CreateVotesTable extends Migration
             $table->increments('id');
             $table->string('question');
             $table->tinyInteger('vote_type');
-            $table->dateTime('stop_at');
+            $table->date('stop_at');
             $table->timestamps();
         });
     }

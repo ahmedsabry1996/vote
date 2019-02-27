@@ -17,38 +17,58 @@
         </div>
         <div :style="voteClass">
 
+
           <template v-if="vote.vote_type==1">
-            <v-radio-group v-model="selectedVote" row>
+            <v-radio-group v-model="selectedVote" row :disabled="ended">
                 <v-radio value="yes">
                   <div slot="label">
-                    yes
+                    yes ({{voteResult.yes}})
                   </div>
                 </v-radio>
                 <v-radio value="no">
                   <div slot="label">
-                    no
+                    no ({{voteResult.no}})
                   </div>
                 </v-radio>
               </v-radio-group>
           </template>
           <template v-else>
-            <v-radio-group v-model="selectedVote" row>
+            <v-radio-group v-model="selectedVote" row :disabled="ended">
 
-              <v-radio value="yes" label="yes"></v-radio>
-              <v-radio value="no" label="no"></v-radio>
-              <v-radio value="notsure" label="other"></v-radio>
+              <v-radio value="yes">
+                <div slot="label">
+                  yes ({{voteResult.yes}})
+                </div>
+              </v-radio>
+              <v-radio value="no">
+                <div slot="label">
+                  no ({{voteResult.no}})
+                </div>
+              </v-radio>
+              <v-radio value="notsure">
+                <div slot="label">
+                  other ({{voteResult.abstain}})
+                </div>
+              </v-radio>
             </v-radio-group>
 
           </template>
 
       </div>
       <div class="text-xs-center">
+        <template v-if="!ended">
             <h4>
-            End {{vote.stop_at | dateForHuman}}
+            Ends {{vote.stop_at | dateForHuman}}
             </h4>
+          </template>
+          <template v-else>
+            <h4 class="yellow--text">
+            Ended {{vote.stop_at | dateForHuman}}
+            </h4>
+          </template>
       </div>
-    <div class="text-xs-center">
-      <v-btn  medium round color="primary" :loading="loading" @click="voted">
+    <div class="text-xs-center" v-if="!ended">
+      <v-btn  medium round color="primary" :loading="loading" :disabled="!selectedVote" @click="voted">
         vote
       </v-btn>
     </div>
@@ -58,6 +78,7 @@
 
 
     <v-snackbar
+    top
       color="indigo"
       v-model="snackbar">
       <h3>Done</h3>
@@ -81,9 +102,12 @@ export default {
     data(){
       return {
         vote:null,
-        selectedVote:'null',
+        voteResult:null,
+        selectedVote:null,
         loading:false,
-        snackbar:false
+        snackbar:false,
+        ended:false
+
 
       }
     },
@@ -126,12 +150,16 @@ export default {
 
               this.$store.dispatch('ShowVote',{voteId:id})
               .then((response)=>{
-
-                this.vote = response.data.vote;
-                this.selectedVote = response.data.is_voted_before; 
+                  console.log(response.data);
+                  this.ended = response.data.vote_ended;
+                  this.voteResult = response.data.vote_results;
+                  this.vote = response.data.vote;
+                  this.selectedVote = response.data.is_voted_before;
               })
               .catch((error)=>{
-                console.log(error.response);
+                if(error.response.status == 404 ){
+                  this.$router.push('/')
+                }
               });
       },
       voted(){

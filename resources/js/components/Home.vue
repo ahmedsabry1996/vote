@@ -10,14 +10,17 @@
     </v-flex>
     </v-layout>
   </v-container>
+  <latest-votes></latest-votes>
   </v-app>
 </template>
 
 <script>
   import CreateVote from './CreateVote.vue';
+  import LatestVotes from './LatestVotes.vue';
     export default {
       components:{
         CreateVote,
+        LatestVotes
       },
     }
 </script>

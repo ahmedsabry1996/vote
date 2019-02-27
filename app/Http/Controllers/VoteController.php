@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Voter as voter;
 use App\Vote as vote;
 use App\VoteResult as voteresult;
+use Carbon\Carbon ;
 class VoteController extends Controller
 {
       public function store(Request $request)
@@ -15,14 +16,13 @@ class VoteController extends Controller
           'question'=>'bail|required|string',
           'vote_type'=>'required|numeric|between:1,3',
           'date'=>'bail|required|after:today|date',
-          'time'=>'nullable|date_format:H:i',
         ]);
 
         $question = $request->question;
         $date = $request->date;
         $time = $request->time;
         $vote_type = $request->vote_type;
-        $stop_at = $date . " " . $time . ":00";
+        $stop_at = $date ;
 
         $new_vote = vote::create([
           'question'=>$question,
@@ -40,10 +40,12 @@ class VoteController extends Controller
           'abstain'=>0
         ]);
 
-
+        $num_of_votes = vote::count();
         return response()->json([
         'question'=>$question,
         'stop_at'=>$stop_at,
+        'all_votes'=>$num_of_votes,
+
         'id'=>$vote_id],201);
 
       }
@@ -55,7 +57,8 @@ class VoteController extends Controller
 
           $voter_ip = $request->ips();
           $curren_vote = vote::findOrFail($vote_id);
-
+          $curren_vote_results = $curren_vote->voteresult;
+          $vote_ended = $this->is_finished($curren_vote->stop_at);
           $is_voted_before = voter::where('voter_ip',$voter_ip)
                             ->where('vote_id',$vote_id)->exists();
 
@@ -66,7 +69,10 @@ class VoteController extends Controller
           else{
             $is_voted_before = null;
           }
-          return response()->json(['vote'=>$curren_vote,'is_voted_before'=>$is_voted_before],201);
+          return response()->json(['vote'=>$curren_vote,
+                                    'vote_ended'=>$vote_ended,
+                                    'vote_results'=>$curren_vote_results,
+                                  'is_voted_before'=>$is_voted_before],201);
       }
 
 
@@ -77,9 +83,15 @@ class VoteController extends Controller
         $vote = $request->vote;
         $voter_ip = $request->ip();
 
-        $not_voted_before = voter::where('voter_ip', $voter_ip)
-                                  ->where('vote_id',$vote_id)
-                                  ->doesntExist();
+        $vote_still_available = $this->is_finished($curren_vote->stop_at);
+
+
+          if (!$vote_still_available) {
+
+            $not_voted_before = voter::where('voter_ip', $voter_ip)
+                                      ->where('vote_id',$vote_id)
+                                      ->doesntExist();
+
 
       if ($not_voted_before) {
           voter::create([
@@ -117,8 +129,10 @@ class VoteController extends Controller
         $this->results($vote_id,$old_answer,$vote);
 
       }
+      }
 
-        return response()->json(['is'=>$not_voted_before,
+        return response()->json([
+                                  'is'=>$not_voted_before,
                                  'vote'=>$vote,
                                   'ip'=>$voter_ip],201);
 
@@ -152,6 +166,34 @@ class VoteController extends Controller
 
         $curren_vote->voteresult->save();
 
+    }
+
+
+    public function latest_votes(Request $request)
+    {
+        $num_of_votes = vote::count();
+
+        if ($num_of_votes > 0) {
+
+            $offset = $request->has('offset') ? $request->offset : 0 ;
+
+            $latest_votes = vote::latest()
+            ->offset($offset)
+            ->limit(5)
+            ->get();
+
+        }
+
+      return response()->json(['all_votes'=>$num_of_votes,
+                              'latest_votes'=>$latest_votes]);
+    }
+
+    public function is_finished($stop_at)
+    {
+      if (now()->addHours(2) < $stop_at) {
+          return false;
+      }
+      return true;
     }
 
 }
